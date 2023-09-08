@@ -34,7 +34,7 @@ class Main extends React.Component {
   componentDidMount() {
     const defaultRandom = this.state.default[this.random()];
     this.setState({ str: defaultRandom, loading: false });
-    fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&s=${defaultRandom}`)
+    fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&s=${defaultRandom}`)
       .then((response) => response.json())
       .then((data) =>
         this.setState({
@@ -42,7 +42,11 @@ class Main extends React.Component {
           loading: true,
           totalResults: data.totalResults,
         })
-      );
+      )
+      .catch((err) => {
+        console.err(err);
+        this.setState({ loading: false });
+      });
   }
 
   searchMovies = (str, type = "all") => {
@@ -51,7 +55,7 @@ class Main extends React.Component {
       str = this.state.default[this.random()];
     }
     fetch(
-      `http://www.omdbapi.com/?apikey=${API_KEY}&s=${str}${
+      `https://www.omdbapi.com/?apikey=${API_KEY}&s=${str}${
         type !== "all" ? `&type=${type}` : ""
       }`
     )
@@ -63,6 +67,10 @@ class Main extends React.Component {
           loading: true,
           totalResults: data.totalResults,
         });
+      })
+      .catch((err) => {
+        console.err(err);
+        this.setState({ loading: false });
       });
   };
 
@@ -71,9 +79,11 @@ class Main extends React.Component {
       () => ({ page: this.state.page + 1 }),
       () =>
         fetch(
-          `http://www.omdbapi.com/?apikey=${API_KEY}&s=${this.state.str}&page=${
-            this.state.page
-          }${`&type=${this.state.type === "all" ? "" : this.state.type}`}`
+          `https://www.omdbapi.com/?apikey=${API_KEY}&s=${
+            this.state.str
+          }&page=${this.state.page}${`&type=${
+            this.state.type === "all" ? "" : this.state.type
+          }`}`
         )
           .then((response) => response.json())
           .then((data) => {
@@ -84,7 +94,10 @@ class Main extends React.Component {
               this.setState({ movies: [{}] });
             }
           })
-    );
+    ).catch((err) => {
+      console.err(err);
+      this.setState({ loading: false });
+    });
   };
 
   render() {
