@@ -1,101 +1,93 @@
-import React from "react";
+import React, { useState } from "react";
 
-class Search extends React.Component {
-  state = {
-    search: "",
-    default: "avengers",
-    type: "all",
-  };
+const Search = (props) => {
+  const { searchMovies = Function.prototype } = props;
 
-  handleKey = (e) => {
+  const [search, setSearch] = useState("");
+  const [type, setType] = useState("all");
+
+  const handleKey = (e) => {
     if (e.key === "Enter" || e.type === "click") {
-      this.props.searchMovies(this.state.search, this.state.type);
+      searchMovies(search, type);
     }
   };
 
-  handleChecked = (e) => {
-    this.setState(
-      () => ({ type: e.target.dataset.type }),
-      () => this.props.searchMovies(this.state.search, this.state.type)
-    );
+  const handleChecked = (e) => {
+    setType(e.target.dataset.type);
+    searchMovies(search, e.target.dataset.type);
   };
 
-  render() {
-    return (
-      <div className="row">
-        <div className="input-field col s12">
-          <input
-            type="search"
-            className="validate input"
-            placeholder="search"
-            value={this.state.search}
-            onChange={(e) => this.setState({ search: e.target.value })}
-            onKeyDown={this.handleKey}
-          />
-          <button
-            className="btn indigo light-3 search-btn"
-            onClick={this.handleKey}
-          >
-            Search
-          </button>
-          <div className="radio-button">
-            <p>
-              <label>
-                <input
-                  className="indigo light-3"
-                  checked={this.state.type === "all"}
-                  name="filter"
-                  data-type="all"
-                  type="radio"
-                  onChange={this.handleChecked}
-                />
-                <span>All</span>
-              </label>
-            </p>
-            <p>
-              <label>
-                <input
-                  className="indigo light-3"
-                  checked={this.state.type === "movie"}
-                  name="filter"
-                  type="radio"
-                  data-type="movie"
-                  onChange={this.handleChecked}
-                />
-                <span>Movies Only</span>
-              </label>
-            </p>
-            <p>
-              <label>
-                <input
-                  className="indigo light-3"
-                  checked={this.state.type === "series"}
-                  name="filter"
-                  type="radio"
-                  data-type="series"
-                  onChange={this.handleChecked}
-                />
-                <span>Series Only</span>
-              </label>
-            </p>
-            <p>
-              <label>
-                <input
-                  className="indigo light-3"
-                  checked={this.state.type === "game"}
-                  name="filter"
-                  type="radio"
-                  data-type="game"
-                  onChange={this.handleChecked}
-                />
-                <span>Game Only</span>
-              </label>
-            </p>
-          </div>
+  return (
+    <div className="row">
+      <div className="input-field col s12">
+        <input
+          type="search"
+          className="validate input"
+          placeholder="search"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          onKeyDown={handleKey}
+        />
+        <button className="btn indigo light-3 search-btn" onClick={handleKey}>
+          Search
+        </button>
+        <div className="radio-button">
+          <p>
+            <label>
+              <input
+                className="indigo light-3"
+                checked={type === "all"}
+                name="filter"
+                data-type="all"
+                type="radio"
+                onChange={handleChecked}
+              />
+              <span>All</span>
+            </label>
+          </p>
+          <p>
+            <label>
+              <input
+                className="indigo light-3"
+                checked={type === "movie"}
+                name="filter"
+                type="radio"
+                data-type="movie"
+                onChange={handleChecked}
+              />
+              <span>Movies Only</span>
+            </label>
+          </p>
+          <p>
+            <label>
+              <input
+                className="indigo light-3"
+                checked={type === "series"}
+                name="filter"
+                type="radio"
+                data-type="series"
+                onChange={handleChecked}
+              />
+              <span>Series Only</span>
+            </label>
+          </p>
+          <p>
+            <label>
+              <input
+                className="indigo light-3"
+                checked={type === "game"}
+                name="filter"
+                type="radio"
+                data-type="game"
+                onChange={handleChecked}
+              />
+              <span>Game Only</span>
+            </label>
+          </p>
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export { Search };
