@@ -4,4 +4,4 @@
 
 В ветке FUNCTION проект переделан на функционыльные компоненты
 
-GihubPages по ссылке https://ivan19979.github.io/05-movie/
+GithubPages по ссылке https://ivan19979.github.io/05-movie/
